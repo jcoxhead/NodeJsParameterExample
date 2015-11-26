@@ -7,6 +7,16 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({	extended: true })); // support encoded bodies
 
+function authUser(request, response, next) {
+	var user = {
+		name: 'Kevin',
+		admin: true
+		};
+	request.user = user;
+	next();
+}
+
+
 // routes will go here
 
 // ====================================
@@ -60,10 +70,12 @@ app.post('/api/users', function(req, res) {
 	res.send(user_id + ' ' + token + ' ' + geo);
 });
 
-app.post('/doStuff', function(request, response) {
+app.post('/doStuff', authUser, function(request, response) {
+	console.log(request.user.admin);
 	var param = request.param('foo');
 	response.send({
-		foo:param
+		foo:param,
+		isAdmin:request.user.admin
 	});
 });
 
