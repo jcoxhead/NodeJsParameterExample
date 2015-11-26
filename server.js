@@ -60,6 +60,13 @@ app.post('/api/users', function(req, res) {
 	res.send(user_id + ' ' + token + ' ' + geo);
 });
 
+app.post('/doStuff', function(request, response) {
+	var param = request.param('foo');
+	response.send({
+		foo:param
+	});
+});
+
 // start the server
 app.listen(port);
 console.log('Server started! At http://localhost:' + port);
